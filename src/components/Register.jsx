@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-function Register() {
+function Register({ onTrocarTela }) {
     const [nome, setNome] = useState('')
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
@@ -42,6 +42,7 @@ function Register() {
           onChange={(e) => setConfirmarSenha(e.target.value)}
         />
         <button type="submit">Criar conta</button>
+        <p onClick={onTrocarTela}>Já tem conta? Entrar</p>
       </form>
     )
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function Login() {
+function Login({ onTrocarTela }) {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
 
@@ -26,6 +26,7 @@ function Login() {
             onChange= {(e) => setSenha(e.target.value)}
             />
             <button type="submit">Entrar</button>
+            <p onClick={onTrocarTela}>Não tem conta? Cadastre-se</p>
         </form>
     )
 }
