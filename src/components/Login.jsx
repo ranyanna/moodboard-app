@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 function Login({ onTrocarTela }) {
     const [email, setEmail] = useState('')
@@ -6,8 +8,14 @@ function Login({ onTrocarTela }) {
 
     function handleLogin(e) {
         e.preventDefault()
-        console.log('Email:', email)
-        console.log('Senha', senha)
+
+        signInWithEmailAndPassword(auth, email, senha)
+        .then((userCredential) => {
+            console.log('Login successful:', userCredential.user)
+        })
+        .catch((error) => {
+            console.error('Login error:', error.message)
+        })
     }
     
     return (
