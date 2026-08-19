@@ -1,4 +1,6 @@
 import { useState } from "react"
+import { createUserWithEmailAndPassword } from "firebase/auth"
+import { auth } from "../firebase"
 
 function Register({ onTrocarTela }) {
     const [nome, setNome] = useState('')
@@ -7,11 +9,15 @@ function Register({ onTrocarTela }) {
     const [confirmarSenha, setConfirmarSenha] = useState('')
 
     function handleRegister(e) {
-        e.preventDefault()
-        console.log('Nome:', nome)
-        console.log('Email:', email)
-        console.log('Senha:', senha)
-        console.log('Confirmar senha:', confirmarSenha)
+      e.preventDefault()
+
+      createUserWithEmailAndPassword(auth, email, senha)
+      .then((userCredential) => {
+        console.log('Account created successfully:', userCredential.user)
+      })
+      .catch((error) => {
+        console.error('Registration error:', error.message)
+      })
     }
 
     return (
