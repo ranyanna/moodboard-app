@@ -2,9 +2,10 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 
-function Login({ onTrocarTela }) {
+function Login({ onTrocarTela, onLoginSuccess }) {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
+    const [erro, setErro] = useState('')
 
     function handleLogin(e) {
         e.preventDefault()
@@ -12,9 +13,12 @@ function Login({ onTrocarTela }) {
         signInWithEmailAndPassword(auth, email, senha)
         .then((userCredential) => {
             console.log('Login successful:', userCredential.user)
+            setErro('')
+            onLoginSuccess()
         })
         .catch((error) => {
             console.error('Login error:', error.message)
+            setErro('Email ou senha incorretos.')
         })
     }
     
@@ -35,6 +39,7 @@ function Login({ onTrocarTela }) {
             />
             <button type="submit">Entrar</button>
             <p onClick={onTrocarTela}>Não tem conta? Cadastre-se</p>
+            {erro && <p className="erro">{erro}</p>}
         </form>
     )
 }

@@ -7,16 +7,24 @@ function Register({ onTrocarTela }) {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const [confirmarSenha, setConfirmarSenha] = useState('')
+    const [erro, setErro] = useState('')
 
     function handleRegister(e) {
       e.preventDefault()
 
+      if (senha !== confirmarSenha) {
+        setErro('As senhas não coincidem')
+        return
+      }
+
       createUserWithEmailAndPassword(auth, email, senha)
       .then((userCredential) => {
         console.log('Account created successfully:', userCredential.user)
+        setErro('')
       })
       .catch((error) => {
         console.error('Registration error:', error.message)
+        setErro('Erro ao criar conta')
       })
     }
 
@@ -49,6 +57,7 @@ function Register({ onTrocarTela }) {
         />
         <button type="submit">Criar conta</button>
         <p onClick={onTrocarTela}>Já tem conta? Entrar</p>
+        {erro && <p className="erro">{erro}</p>}
       </form>
     )
 }
