@@ -28,13 +28,13 @@ function Login({ onSwitchScreen }) {
             type="email" 
             placeholder="Digite seu email" 
             value={email}
-            onChange= {(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             />
              <input 
             type="password" 
             placeholder="Digite sua senha" 
             value={password}
-            onChange= {(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             />
             <button type="submit">Entrar</button>
             <p onClick={onSwitchScreen}>Não tem conta? Cadastre-se</p>

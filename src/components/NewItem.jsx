@@ -19,12 +19,12 @@ function NewItem() {
       userId: auth.currentUser.uid
     })
       .then(() => {
-        console.log('Item adicionado com sucesso!')
+        console.log('Item added successfully!')
         setTitle('')
         setImageUrl('')
       })
       .catch((err) => {
-        console.error('Erro ao adicionar item:', err.message)
+        console.error('Error adding item:', err.message)
       })
   }
 
