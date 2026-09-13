@@ -2,29 +2,29 @@ import { useState } from "react"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../firebase"
 
-function Register({ onTrocarTela }) {
-    const [nome, setNome] = useState('')
+function Register({ onSwitchScreen }) {
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
-    const [senha, setSenha] = useState('')
-    const [confirmarSenha, setConfirmarSenha] = useState('')
-    const [erro, setErro] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [error, setError] = useState('')
 
     function handleRegister(e) {
       e.preventDefault()
 
-      if (senha !== confirmarSenha) {
-        setErro('As senhas não coincidem')
+      if (password !== confirmPassword) {
+        setError('As senhas não coincidem')
         return
       }
 
-      createUserWithEmailAndPassword(auth, email, senha)
+      createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log('Account created successfully:', userCredential.user)
-        setErro('')
+        setError('')
       })
-      .catch((error) => {
-        console.error('Registration error:', error.message)
-        setErro('Erro ao criar conta')
+      .catch((err) => {
+        console.error('Registration error:', err.message)
+        setError('Erro ao criar conta')
       })
     }
 
@@ -34,8 +34,8 @@ function Register({ onTrocarTela }) {
         <input
           type="text"
           placeholder="Digite seu nome"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
         <input
           type="email"
@@ -46,18 +46,18 @@ function Register({ onTrocarTela }) {
         <input
           type="password"
           placeholder="Digite sua senha"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <input
           type="password"
           placeholder="Confirme sua senha"
-          value={confirmarSenha}
-          onChange={(e) => setConfirmarSenha(e.target.value)}
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
         />
         <button type="submit">Criar conta</button>
-        <p onClick={onTrocarTela}>Já tem conta? Entrar</p>
-        {erro && <p className="erro">{erro}</p>}
+        <p onClick={onSwitchScreen}>Já tem conta? Entrar</p>
+        {error && <p className="error">{error}</p>}
       </form>
     )
 }
