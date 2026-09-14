@@ -4,28 +4,39 @@ import { db, auth } from "../firebase"
 
 function NewItem() {
   const [title, setTitle] = useState('')
-  const [imageUrl, setImageUrl] = useState('')
+  const [imageFile, setImageFile] = useState(null)
 
   function handleSubmit(e) {
     e.preventDefault()
 
-    if (title === '' || imageUrl === '') {
+    if (title === '' || !imageFile) {
       return
     }
 
-    addDoc(collection(db, 'moodboards'), {
-      title: title,
-      imageUrl: imageUrl,
-      userId: auth.currentUser.uid
+    const formData = new FormData()
+    formData.append('file', imageFile)
+    formData.append('upload_preset', 'moodboard_uploads')
+
+    fetch('https://api.cloudinary.com/v1_1/vjwwsofs/image/upload', {
+      method: 'POST',
+      body: formData
     })
-      .then(() => {
-        console.log('Item added successfully!')
-        setTitle('')
-        setImageUrl('')
+    .then((response) => response.json())
+    .then((data) => {
+      return addDoc(collection(db, 'moodboards'), {
+        title: title,
+        imageUrl: data.secure_url,
+        userId: auth.currentUser.uid
       })
-      .catch((err) => {
-        console.error('Error adding item:', err.message)
-      })
+    })
+    .then(() => {
+      console.log('Item added sucessfully!')
+      setTitle('')
+      setImageFile(null)
+    })
+    .catch((err) => {
+      console.error('Error adding item:', err.message)
+    })
   }
 
   return (
@@ -37,10 +48,8 @@ function NewItem() {
         onChange={(e) => setTitle(e.target.value)}
       />
       <input
-        type="text"
-        placeholder="URL da imagem"
-        value={imageUrl}
-        onChange={(e) => setImageUrl(e.target.value)}
+        type="file"
+        onChange={(e) => setImageFile(e.target.files[0])}
       />
       <button type="submit">Adicionar ao mural</button>
     </form>
