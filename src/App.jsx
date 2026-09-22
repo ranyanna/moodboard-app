@@ -13,6 +13,8 @@ function App() {
   const [user, setUser] = useState(null)
   const [images, setImages] = useState([])
   const [editingItem, setEditingItem] = useState(null)
+  const [loadingImages, setLoadingImages] = useState(true)
+  const [fetchError, setFetchError] = useState('')
 
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
@@ -27,13 +29,22 @@ function App() {
 
     const q = query(collection(db, 'moodboards'), where('userId', '==', user.uid))
 
-    const unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map((docSnap) => ({
-        id: docSnap.id,
-        ...docSnap.data()
-      }))
-      setImages(data)
-    })
+    const unsubscribeSnapshot = onSnapshot(
+      q,
+      (snapshot) => {
+        const data = snapshot.docs.map((docSnap) => ({
+          id: docSnap.id,
+          ...docSnap.data()
+        }))
+        setImages(data)
+        setLoadingImages(false)
+      },
+      (err) => {
+        console.error('Error fetching images:', err.message)
+        setFetchError('Não foi possível carregar suas imagens. Tente novamente.')
+        setLoadingImages(false)
+      }
+    )
 
     return () => unsubscribeSnapshot()
   }, [user])
@@ -69,9 +80,17 @@ function App() {
           <p>Bem-vinda! Login realizado com sucesso</p>
           <button onClick={handleLogout}>Sair</button>
           <NewItem />
-          {images.map((image) => (
-            <Card key={image.id} item={image} onDelete={handleDelete} onEdit={handleEdit} />
-          ))}
+          {loadingImages ? (
+            <p>Carregando...</p>
+          ) : fetchError ? (
+            <p className="error">{fetchError}</p>
+          ) : images.length === 0 ? (
+            <p>Nenhuma imagem ainda. Adicione a primeira!</p>
+          ) : (
+            images.map((image) => (
+              <Card key={image.id} item={image} onDelete={handleDelete} onEdit={handleEdit} />
+            ))
+          )}
           {editingItem && (
             <EditItem item={editingItem} onClose={() => setEditingItem(null)} />
           )}
