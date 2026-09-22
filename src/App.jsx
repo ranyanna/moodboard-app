@@ -13,7 +13,7 @@ function App() {
   const [user, setUser] = useState(null)
   const [images, setImages] = useState([])
   const [editingItem, setEditingItem] = useState(null)
-  const [loadingImages, setLoadingImages] = useState(true)
+  const [isLoadingImages, setIsLoadingImages] = useState(true)
   const [fetchError, setFetchError] = useState('')
 
   useEffect(() => {
@@ -37,12 +37,12 @@ function App() {
           ...docSnap.data()
         }))
         setImages(data)
-        setLoadingImages(false)
+        setIsLoadingImages(false)
       },
       (err) => {
         console.error('Error fetching images:', err.message)
         setFetchError('Não foi possível carregar suas imagens. Tente novamente.')
-        setLoadingImages(false)
+        setIsLoadingImages(false)
       }
     )
 
@@ -80,7 +80,7 @@ function App() {
           <p>Bem-vinda! Login realizado com sucesso</p>
           <button onClick={handleLogout}>Sair</button>
           <NewItem />
-          {loadingImages ? (
+          {isLoadingImages ? (
             <p>Carregando...</p>
           ) : fetchError ? (
             <p className="error">{fetchError}</p>

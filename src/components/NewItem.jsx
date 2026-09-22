@@ -5,7 +5,7 @@ import { db, auth } from "../firebase"
 function NewItem() {
   const [title, setTitle] = useState('')
   const [imageFile, setImageFile] = useState(null)
-  const [uploading, setUploading] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -15,7 +15,7 @@ function NewItem() {
       return
     }
 
-    setUploading(true)
+    setIsUploading(true)
 
     const formData = new FormData()
     formData.append('file', imageFile)
@@ -42,7 +42,7 @@ function NewItem() {
       console.error('Error adding item:', err.message)
     })
     .finally(() => {
-      setUploading(false)
+      setIsUploading(false)
     })
   }
 
@@ -53,15 +53,15 @@ function NewItem() {
         placeholder="Título da imagem"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        disabled={uploading}
+        disabled={isUploading}
       />
       <input
         type="file"
         onChange={(e) => setImageFile(e.target.files[0])}
-        disabled={uploading}
+        disabled={isUploading}
       />
-      <button type="submit" disabled={uploading}>
-        {uploading ? 'Enviando...' : 'Adicionar ao mural'}</button>
+      <button type="submit" disabled={isUploading}>
+        {isUploading ? 'Enviando...' : 'Adicionar ao mural'}</button>
     </form>
   )
 }
