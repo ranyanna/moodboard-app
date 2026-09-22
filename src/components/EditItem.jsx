@@ -5,9 +5,12 @@ import { db } from '../firebase';
 function EditItem({ item, onClose }) {
     const [title, setTitle] = useState(item.title)
     const [imageUrl, setImageUrl] = useState(item.imageUrl)
+    const [isUpdating, setIsUpdating] = useState(false)
 
     function handleSubmit(e) {
         e.preventDefault()
+
+        setIsUpdating(true)
 
         updateDoc(doc(db, 'moodboards', item.id), {
             title: title,
@@ -19,7 +22,12 @@ function EditItem({ item, onClose }) {
         })
         .catch((err) => {
             console.error('Error updating item:', err.message)
+            alert('Não foi possível salvar as alterações. Tente novamete.')
         })
+        .finally(() => {
+            setIsUpdating(false)
+        })
+
     }
 
     return (
@@ -28,16 +36,19 @@ function EditItem({ item, onClose }) {
             type="text" 
             value={title} 
             onChange={(e) => setTitle(e.target.value)} 
+            disabled={isUpdating}
             />
 
             <input 
             type="text" 
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)} 
+            disabled={isUpdating}
             />
 
-            <button type="submit">Salvar alterações</button>
-            <button type="button" onClick={onClose}>Cancelar</button>
+            <button type="submit" disabled={isUpdating}>
+                {isUpdating ? 'Salvando...' : 'Salvar alterações'}</button>
+            <button type="button" onClick={onClose} disabled={isUpdating}>Cancelar</button>
         </form>
     )
 }
