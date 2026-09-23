@@ -6,10 +6,12 @@ function EditItem({ item, onClose }) {
     const [title, setTitle] = useState(item.title)
     const [imageUrl, setImageUrl] = useState(item.imageUrl)
     const [isUpdating, setIsUpdating] = useState(false)
+    const [error, setError] = useState('')
 
     function handleSubmit(e) {
         e.preventDefault()
 
+        setError('')
         setIsUpdating(true)
 
         updateDoc(doc(db, 'moodboards', item.id), {
@@ -22,7 +24,7 @@ function EditItem({ item, onClose }) {
         })
         .catch((err) => {
             console.error('Error updating item:', err.message)
-            alert('Não foi possível salvar as alterações. Tente novamete.')
+            setError('Não foi possível salvar as alterações. Tente novamente')
         })
         .finally(() => {
             setIsUpdating(false)
@@ -49,6 +51,7 @@ function EditItem({ item, onClose }) {
             <button type="submit" disabled={isUpdating}>
                 {isUpdating ? 'Salvando...' : 'Salvar alterações'}</button>
             <button type="button" onClick={onClose} disabled={isUpdating}>Cancelar</button>
+            {error && <p className="error">{error}</p>}
         </form>
     )
 }

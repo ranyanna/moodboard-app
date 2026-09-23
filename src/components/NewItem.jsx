@@ -6,15 +6,17 @@ function NewItem() {
   const [title, setTitle] = useState('')
   const [imageFile, setImageFile] = useState(null)
   const [isUploading, setIsUploading] = useState(false)
+  const [error, setError] = useState('')
 
   function handleSubmit(e) {
     e.preventDefault()
 
     if (title === '' || !imageFile) {
-      alert('Preencha o título e escolha uma imagem antes de adicionar.')
+      setError('Preencha o título e escolha uma imagem antes de adicionar')
       return
     }
 
+    setError('')
     setIsUploading(true)
 
     const formData = new FormData()
@@ -34,12 +36,13 @@ function NewItem() {
       })
     })
     .then(() => {
-      console.log('Item added sucessfully!')
+      console.log('Item added successfully!')
       setTitle('')
       setImageFile(null)
     })
     .catch((err) => {
       console.error('Error adding item:', err.message)
+      setError('Não foi possivel adicionar a imagem. Tente novamente')
     })
     .finally(() => {
       setIsUploading(false)
@@ -62,6 +65,7 @@ function NewItem() {
       />
       <button type="submit" disabled={isUploading}>
         {isUploading ? 'Enviando...' : 'Adicionar ao mural'}</button>
+        {error && <p className="error">{error}</p>}
     </form>
   )
 }
