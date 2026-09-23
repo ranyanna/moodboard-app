@@ -50,12 +50,18 @@ function App() {
   }, [user])
 
   function handleDelete(id) {
+    const confirmed = window.confirm('Tem certeza que deseja excluir este item?')
+
+    if (!confirmed) {
+      return
+    }
     deleteDoc(doc(db, 'moodboards', id))
     .then(() => {
       console.log('Item deleted successfully')
     })
     .catch((err) => {
       console.error('Error deleting item:', err.message)
+      alert('Não foi possível excluir o item. Tente novamente.')
     })
   }
 
