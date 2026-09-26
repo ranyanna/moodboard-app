@@ -1,10 +1,16 @@
+import styles from './Card.module.css'
+
 function Card({ item, onDelete, onEdit }) {
     return (
-        <div className="card">
-            <img src={item.imageUrl} alt={item.title} />
-            <p>{item.title}</p>
-            <button onClick={() => onDelete(item.id)}>Excluir</button>
-            <button onClick={() => onEdit(item)}>Editar</button>
+        <div className={styles.card}>
+            <img className={styles.image} src={item.imageUrl} alt={item.title} />
+            <div className={styles.actions}>
+                <button className={styles.actionButton} onClick={() => onEdit(item)}>✎</button>
+                <button className={styles.actionButton} onClick={() => onDelete(item.id)}>✕</button>
+            </div>
+            <div className={styles.info}>
+                <p className={styles.title}>{item.title}</p>
+            </div>
         </div>
     )
 }
