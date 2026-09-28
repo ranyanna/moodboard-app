@@ -7,6 +7,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth'
 import NewItem from './components/NewItem'
 import Card from './components/Card'
 import EditItem from './components/EditItem'
+import styles from './App.module.css'
 
 function App() {
   const [showLogin, setShowLogin] = useState(true)
@@ -93,9 +94,11 @@ function App() {
           ) : images.length === 0 ? (
             <p>Nenhuma imagem ainda. Adicione a primeira!</p>
           ) : (
-            images.map((image) => (
+            <div className={styles.grid}>
+            {images.map((image) => (
               <Card key={image.id} item={image} onDelete={handleDelete} onEdit={handleEdit} />
-            ))
+            ))}
+            </div>
           )}
           {editingItem && (
             <EditItem item={editingItem} onClose={() => setEditingItem(null)} />
