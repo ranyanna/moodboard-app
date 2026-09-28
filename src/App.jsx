@@ -84,8 +84,18 @@ function App() {
     <div>
       {user ? (
         <div>
-          <p>Bem-vinda! Login realizado com sucesso</p>
-          <button onClick={handleLogout}>Sair</button>
+          <header className={styles.header}>
+            <div className={styles.brand}>
+              <span className={styles.brandName}>Moodboard</span>
+              <span className={styles.brandTag}>Mural pessoal</span>
+            </div>
+            <button className={styles.logoutButton} onClick={handleLogout}>Sair</button>
+          </header>
+          <section className={styles.hero}>
+            <h1 className={styles.title}>
+              Mural de <span className={styles.titleAccent}>referências</span>
+            </h1>
+          </section>
           <NewItem />
           {isLoadingImages ? (
             <p>Carregando...</p>

@@ -4,3 +4,58 @@
     gap: var(--spacing-md);
     padding: var(--spacing-lg);
 }
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.brand {
+    display: flex;
+    flex-direction: column;
+}
+
+.brandName {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.brandTag {
+    font-size: 0.7rem;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+}
+
+.logoutButton {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    padding: 0.5rem 1.25rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+    cursor: pointer;
+}
+
+.hero {
+    padding: var(--font-heading);
+}
+
+.title {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.titleAccent {
+    background: var(--color-accent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
