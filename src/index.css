@@ -34,8 +34,7 @@ body {
 }
 
 .error {
-  color: #C0392B;
+  color: #B85C56;
   font-size: 0.85rem;
-  text-align: center;
-  margin: 0;
+  margin: var(--spacing-sm) 0 0;
 }

@@ -101,3 +101,7 @@
     text-decoration: underline;
     cursor: pointer;
 }
+
+.errorCentered {
+    text-align: center;
+}

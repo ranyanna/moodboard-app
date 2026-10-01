@@ -83,7 +83,7 @@ function Login({ onSwitchScreen }) {
             </span>
           </p>
 
-          {error && <p className="error">{error}</p>}
+          {error && <p className={`error ${styles.errorCentered}`}>{error}</p>}
         </form>
       </div>
     </div>
