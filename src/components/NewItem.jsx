@@ -51,6 +51,7 @@ function NewItem() {
   }
 
   return (
+    <div className={styles.formWrapper}>
     <form className={styles.form} onSubmit={handleSubmit}>
       <input
         className={styles.titleInput}
@@ -81,9 +82,10 @@ function NewItem() {
       >
         {isUploading ? "Enviando..." : "Adicionar ao mural"}
       </button>
-      {error && <p className="error">{error}</p>}
     </form>
-  );
+    {error && <p className="error">{error}</p>}
+    </div>
+  )
 }
 
 export default NewItem;

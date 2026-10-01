@@ -6,7 +6,6 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     border-radius: var(--radius-lg);
     padding: var(--spacing-md);
-    margin: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
 }
 
 .titleInput {
@@ -59,4 +58,11 @@
     font-size: 0.80rem;
     cursor: pointer;
     white-space: nowrap;
+}
+
+.formWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin: 0 var(--spacing-lg) var(--spacing-lg);
 }
