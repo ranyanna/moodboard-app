@@ -59,3 +59,10 @@
     background-clip: text;
     color: transparent;
 }
+
+.stateMessage {
+    text-align: center;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    padding: var(--spacing-lg) var(--spacing-md);
+}
