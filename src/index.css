@@ -32,3 +32,10 @@ body {
   color: var(--color-text-primary);
   font-family: var(--font-body);
 }
+
+.error {
+  color: #C0392B;
+  font-size: 0.85rem;
+  text-align: center;
+  margin: 0;
+}
