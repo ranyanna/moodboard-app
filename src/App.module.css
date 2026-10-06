@@ -70,3 +70,10 @@
     font-size: 1rem;
     padding: var(--spacing-lg) var(--spacing-md);
 }
+
+@media (max-width: 640px) {
+    .title {
+        font-size: 2rem;
+        text-align: center;
+    }
+}
