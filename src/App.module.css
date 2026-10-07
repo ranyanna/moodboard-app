@@ -72,8 +72,12 @@
 }
 
 @media (max-width: 640px) {
-    .title {
-        font-size: 2rem;
-        text-align: center;
-    }
+  .title {
+    font-size: 2rem;
+  }
+
+  .grid {
+    columns: 140px;
+    padding: var(--spacing-md);
+  }
 }

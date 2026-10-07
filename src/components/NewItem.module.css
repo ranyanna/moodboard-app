@@ -68,8 +68,8 @@
 }
 
 @media (max-width: 640px) {
-    .form {
-        flex-direction: column;
-        align-items: stretch;
-    }
+  .form {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
