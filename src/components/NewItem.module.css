@@ -1,0 +1,75 @@
+.form {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    background-color: var(--color-surface);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+}
+
+.titleInput {
+    flex: 2;
+    max-width: 500px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-bg);
+    font-family: var(--font-body);
+    font-size: 0.80rem;
+    color: var(--color-text-primary);
+    padding: var(--spacing-xs);
+}
+
+.hiddenInput {
+    display: none;
+}
+
+.fileLabel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-full);
+    padding: var(--spacing-xs);
+    font-family: var(--font-body);
+    font-size: 0.80rem;
+    background-color: var(--color-bg);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fileLabelDisabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.submitButton {
+    flex: 0 0 auto;
+    background: linear-gradient(90deg, var(--color-accent-start), var(--color-accent-solid), var(--color-accent-end));
+    color: var(--color-surface);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-family: var(--font-body);
+    font-size: 0.80rem;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.formWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin: 0 var(--spacing-lg) var(--spacing-lg);
+}
+
+@media (max-width: 640px) {
+  .form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
