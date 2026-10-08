@@ -11,6 +11,8 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "./firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import { DndContext } from "@dnd-kit/core";
+import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import NewItem from "./components/NewItem";
 import Card from "./components/Card";
 import EditItem from "./components/EditItem";
@@ -94,6 +96,10 @@ function App() {
       });
   }
 
+  function handleDragEnd(event) {
+    console.log(event);
+  }
+
   return (
     <div>
       {user ? (
@@ -118,18 +124,27 @@ function App() {
           ) : fetchError ? (
             <p className="error">{fetchError}</p>
           ) : images.length === 0 ? (
-            <p className={styles.stateMessage}>Nenhuma imagem ainda... Adicione a primeira!</p>
+            <p className={styles.stateMessage}>
+              Nenhuma imagem ainda... Adicione a primeira!
+            </p>
           ) : (
-            <div className={styles.grid}>
-              {images.map((image) => (
-                <Card
-                  key={image.id}
-                  item={image}
-                  onDelete={handleDelete}
-                  onEdit={handleEdit}
-                />
-              ))}
-            </div>
+            <DndContext onDragEnd={handleDragEnd}>
+              <SortableContext
+                items={images.map((image) => image.id)}
+                strategy={rectSortingStrategy}
+              >
+                <div className={styles.grid}>
+                  {images.map((image) => (
+                    <Card
+                      key={image.id}
+                      item={image}
+                      onDelete={handleDelete}
+                      onEdit={handleEdit}
+                    />
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
           )}
           {editingItem && (
             <EditItem item={editingItem} onClose={() => setEditingItem(null)} />
