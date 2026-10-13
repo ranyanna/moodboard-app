@@ -12,7 +12,7 @@ import {
 import { db, auth } from "./firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { DndContext } from "@dnd-kit/core";
-import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
+import { SortableContext, rectSortingStrategy, arrayMove } from "@dnd-kit/sortable";
 import NewItem from "./components/NewItem";
 import Card from "./components/Card";
 import EditItem from "./components/EditItem";
@@ -97,7 +97,16 @@ function App() {
   }
 
   function handleDragEnd(event) {
-    console.log(event);
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) return;
+
+    setImages((currentImages) => {
+      const oldIndex = currentImages.findIndex((image) => image.id === active.id);
+      const newIndex = currentImages.findIndex((image) => image.id === over.id);
+
+      return arrayMove(currentImages, oldIndex, newIndex)
+    });
   }
 
   return (
