@@ -7,7 +7,7 @@ function Card({ item, onDelete, onEdit }) {
     useSortable({ id: item.id });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     transition,
   };
 
