@@ -3,7 +3,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { db, auth } from "../firebase";
 import styles from "./NewItem.module.css";
 
-function NewItem() {
+function NewItem({ nextPosition }) {
   const [title, setTitle] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -34,6 +34,7 @@ function NewItem() {
           title: title,
           imageUrl: data.secure_url,
           userId: auth.currentUser.uid,
+          position: nextPosition,
         });
       })
       .then(() => {

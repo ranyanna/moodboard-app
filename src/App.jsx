@@ -38,6 +38,9 @@ function App() {
     useSensor(PointerSensor, { activationConstraint: { distance: 8 }}),
   );
 
+  const nextPosition =
+  Math.max(-1, ...images.map((image) => image.position ?? -1)) + 1;
+
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -155,7 +158,7 @@ function App() {
               Mural de <span className={styles.titleAccent}>referências</span>
             </h1>
           </section>
-          <NewItem />
+          <NewItem nextPosition={nextPosition} />
           {isLoadingImages ? (
             <p className={styles.stateMessage}>Carregando...</p>
           ) : fetchError ? (
