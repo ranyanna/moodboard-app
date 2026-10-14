@@ -12,7 +12,12 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "./firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { DndContext } from "@dnd-kit/core";
+import { 
+  DndContext,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import { SortableContext, rectSortingStrategy, arrayMove } from "@dnd-kit/sortable";
 import NewItem from "./components/NewItem";
 import Card from "./components/Card";
@@ -28,6 +33,10 @@ function App() {
   const [editingItem, setEditingItem] = useState(null);
   const [isLoadingImages, setIsLoadingImages] = useState(true);
   const [fetchError, setFetchError] = useState("");
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 }}),
+  );
 
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
@@ -156,7 +165,7 @@ function App() {
               Nenhuma imagem ainda... Adicione a primeira!
             </p>
           ) : (
-            <DndContext onDragEnd={handleDragEnd}>
+            <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
               <SortableContext
                 items={images.map((image) => image.id)}
                 strategy={rectSortingStrategy}
