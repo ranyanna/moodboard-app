@@ -8,6 +8,7 @@ import {
   where,
   deleteDoc,
   doc,
+  writeBatch,
 } from "firebase/firestore";
 import { db, auth } from "./firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -17,6 +18,8 @@ import NewItem from "./components/NewItem";
 import Card from "./components/Card";
 import EditItem from "./components/EditItem";
 import styles from "./App.module.css";
+
+const NO_POSITION = Number.MAX_SAFE_INTEGER;
 
 function App() {
   const [showLogin, setShowLogin] = useState(true);
@@ -49,6 +52,9 @@ function App() {
           id: docSnap.id,
           ...docSnap.data(),
         }));
+        data.sort(
+          (a, b) => (a.position ?? NO_POSITION) - (b.position ?? NO_POSITION),
+        );
         setImages(data);
         setIsLoadingImages(false);
       },
@@ -101,11 +107,24 @@ function App() {
 
     if (!over || active.id === over.id) return;
 
-    setImages((currentImages) => {
-      const oldIndex = currentImages.findIndex((image) => image.id === active.id);
-      const newIndex = currentImages.findIndex((image) => image.id === over.id);
+      const oldIndex = images.findIndex((image) => image.id === active.id);
+      const newIndex = images.findIndex((image) => image.id === over.id);
+      const reorderedImages = arrayMove(images, oldIndex, newIndex);
 
-      return arrayMove(currentImages, oldIndex, newIndex)
+      setImages(reorderedImages);
+      saveOrder(reorderedImages);
+  }
+
+  function saveOrder(orderedImages) {
+    const batch = writeBatch(db);
+
+    orderedImages.forEach((image, index) => {
+      batch.update(doc(db, "moodboards", image.id), { position: index });
+    });
+
+    batch.commit().catch((err) => {
+      console.error("Error saving order:", err.message);
+      alert("Não foi possível salvar a nova ordem. Tente novamente.")
     });
   }
 
