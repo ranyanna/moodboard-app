@@ -3,12 +3,13 @@ import { CSS } from "@dnd-kit/utilities";
 import styles from "./Card.module.css";
 
 function Card({ item, onDelete, onEdit }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: item.id });
 
   const style = {
     transform: CSS.Translate.toString(transform),
     transition,
+    opacity: isDragging ? 0.5 : 1,
   };
 
   return (
