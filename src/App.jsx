@@ -12,13 +12,17 @@ import {
 } from "firebase/firestore";
 import { db, auth } from "./firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { 
+import {
   DndContext,
   PointerSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { SortableContext, rectSortingStrategy, arrayMove } from "@dnd-kit/sortable";
+import {
+  SortableContext,
+  rectSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
 import NewItem from "./components/NewItem";
 import Card from "./components/Card";
 import EditItem from "./components/EditItem";
@@ -35,11 +39,8 @@ function App() {
   const [fetchError, setFetchError] = useState("");
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 8 }}),
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
   );
-
-  const nextPosition =
-  Math.max(-1, ...images.map((image) => image.position ?? -1)) + 1;
 
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
@@ -119,12 +120,12 @@ function App() {
 
     if (!over || active.id === over.id) return;
 
-      const oldIndex = images.findIndex((image) => image.id === active.id);
-      const newIndex = images.findIndex((image) => image.id === over.id);
-      const reorderedImages = arrayMove(images, oldIndex, newIndex);
+    const oldIndex = images.findIndex((image) => image.id === active.id);
+    const newIndex = images.findIndex((image) => image.id === over.id);
+    const reorderedImages = arrayMove(images, oldIndex, newIndex);
 
-      setImages(reorderedImages);
-      saveOrder(reorderedImages);
+    setImages(reorderedImages);
+    saveOrder(reorderedImages);
   }
 
   function saveOrder(orderedImages) {
@@ -136,7 +137,7 @@ function App() {
 
     batch.commit().catch((err) => {
       console.error("Error saving order:", err.message);
-      alert("Não foi possível salvar a nova ordem. Tente novamente.")
+      alert("Não foi possível salvar a nova ordem. Tente novamente.");
     });
   }
 
@@ -158,7 +159,7 @@ function App() {
               Mural de <span className={styles.titleAccent}>referências</span>
             </h1>
           </section>
-          <NewItem nextPosition={nextPosition} />
+          <NewItem />
           {isLoadingImages ? (
             <p className={styles.stateMessage}>Carregando...</p>
           ) : fetchError ? (
