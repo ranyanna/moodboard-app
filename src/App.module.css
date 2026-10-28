@@ -4,7 +4,7 @@
     padding: var(--spacing-lg);
 }
 
-.grid > * {
+.grid>* {
     break-inside: avoid;
     margin-bottom: var(--spacing-md);
 }
@@ -72,12 +72,20 @@
 }
 
 @media (max-width: 640px) {
-  .title {
-    font-size: 2rem;
-  }
+    .header {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
 
-  .grid {
-    columns: 140px;
-    padding: var(--spacing-md);
-  }
+    .hero {
+        padding: var(--spacing-lg) var(--spacing-md) 0;
+    }
+    
+    .title {
+        font-size: 2rem;
+    }
+
+    .grid {
+        columns: 140px;
+        padding: var(--spacing-md);
+    }
 }
