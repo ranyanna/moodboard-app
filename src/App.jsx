@@ -26,6 +26,7 @@ import { Toaster } from "react-hot-toast";
 function App() {
   const [showLogin, setShowLogin] = useState(true);
   const [user, setUser] = useState(null);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   const {
     images,
@@ -47,6 +48,7 @@ function App() {
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      setIsAuthLoading(false);
     });
 
     return () => unsubscribeAuth();
@@ -72,6 +74,10 @@ function App() {
     const reorderedImages = arrayMove(images, oldIndex, newIndex);
 
     reorderImages(reorderedImages);
+  }
+
+  if (isAuthLoading) {
+    return null;
   }
 
   return (
