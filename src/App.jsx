@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -99,10 +98,11 @@ function App() {
               Nenhuma imagem ainda... Adicione a primeira!
             </p>
           ) : (
-            <DndContext 
-            sensors={sensors} 
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
               <SortableContext
                 items={images.map((image) => image.id)}
                 strategy={rectSortingStrategy}
