@@ -22,9 +22,11 @@ function NewItem() {
 
     const formData = new FormData();
     formData.append("file", imageFile);
-    formData.append("upload_preset", "moodboard_uploads");
+    formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
 
-    fetch("https://api.cloudinary.com/v1_1/vjwwsofs/image/upload", {
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+
+    fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
       method: "POST",
       body: formData,
     })
