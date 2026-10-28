@@ -16,6 +16,9 @@
 .image {
     width: 100%;
     display: block;
+    -webkit-touch-callout: none;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .info {

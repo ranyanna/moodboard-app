@@ -25,6 +25,7 @@ function Card({ item, onDelete, onEdit }) {
         src={item.imageUrl}
         alt={item.title}
         draggable={false}
+        onContextMenu={(e) => e.preventDefault()}
       />
       <div className={styles.actions}>
         <button className={styles.actionButton} onClick={() => onEdit(item)}>
