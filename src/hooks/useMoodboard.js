@@ -9,6 +9,7 @@ import {
     writeBatch,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import toast from "react-hot-toast";
 
 const NO_POSITION = Number.MAX_SAFE_INTEGER;
 
@@ -61,11 +62,11 @@ export function useMoodboard(user) {
         }
         deleteDoc(doc(db, "moodboards", id))
             .then(() => {
-                console.log("Item deleted successfully");
+                toast.success("Item excluído com sucesso!")
             })
             .catch((err) => {
                 console.error("Error deleting item:", err.message);
-                alert("Não foi possível excluir o item. Tente novamente.");
+                toast.error("Não foi possível excluir o item.");
             });
     }
 
@@ -83,7 +84,7 @@ export function useMoodboard(user) {
 
         batch.commit().catch((err) => {
             console.error("Error saving order:", err.message);
-            alert("Não foi possível salvar a nova ordem. Tente novamente.");
+            toast.error("Não foi possível salvar a nova ordem.");
         });
     }
 

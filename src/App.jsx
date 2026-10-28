@@ -21,6 +21,7 @@ import Card from "./components/Card";
 import EditItem from "./components/EditItem";
 import styles from "./App.module.css";
 import { useMoodboard } from "./hooks/useMoodboard";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [showLogin, setShowLogin] = useState(true);
@@ -75,6 +76,7 @@ function App() {
 
   return (
     <div>
+      <Toaster position="top-center" />
       {user ? (
         <div>
           <header className={styles.header}>

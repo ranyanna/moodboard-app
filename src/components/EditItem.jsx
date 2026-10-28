@@ -2,17 +2,16 @@ import { useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import styles from "./EditItem.module.css";
+import toast from "react-hot-toast";
 
 function EditItem({ item, onClose }) {
   const [title, setTitle] = useState(item.title);
   const [imageUrl, setImageUrl] = useState(item.imageUrl);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [error, setError] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    setError("");
     setIsUpdating(true);
 
     updateDoc(doc(db, "moodboards", item.id), {
@@ -20,12 +19,12 @@ function EditItem({ item, onClose }) {
       imageUrl: imageUrl,
     })
       .then(() => {
-        console.log("Item updated successfully!");
+        toast.success("Referência atualizada com sucesso!");
         onClose();
       })
       .catch((err) => {
         console.error("Error updating item:", err.message);
-        setError("Não foi possível salvar as alterações. Tente novamente");
+        toast.error("Não foi possível salvar as alterações.");
       })
       .finally(() => {
         setIsUpdating(false);
@@ -73,8 +72,6 @@ function EditItem({ item, onClose }) {
               disabled={isUpdating}
             />
           </div>
-
-          {error && <p className="error">{error}</p>}
 
           <div className={styles.actions}>
             <button

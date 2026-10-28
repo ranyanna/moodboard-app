@@ -2,22 +2,21 @@ import { useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { db, auth } from "../firebase";
 import styles from "./NewItem.module.css";
+import toast from "react-hot-toast";
 
 function NewItem() {
   const [title, setTitle] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [error, setError] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
 
     if (title === "" || !imageFile) {
-      setError("Preencha o título e escolha uma imagem antes de adicionar");
+      toast.error("Preencha o título e escolha uma imagem antes de adicionar");
       return;
     }
 
-    setError("");
     setIsUploading(true);
 
     const formData = new FormData();
@@ -40,13 +39,13 @@ function NewItem() {
         });
       })
       .then(() => {
-        console.log("Item added successfully!");
+        toast.success("Imagem adicionada ao mural!")
         setTitle("");
         setImageFile(null);
       })
       .catch((err) => {
         console.error("Error adding item:", err.message);
-        setError("Não foi possível adicionar a imagem. Tente novamente");
+        toast.error("Não foi possível adicionar a imagem.");
       })
       .finally(() => {
         setIsUploading(false);
@@ -86,7 +85,6 @@ function NewItem() {
           {isUploading ? "Enviando..." : "Adicionar ao mural"}
         </button>
       </form>
-      {error && <p className="error">{error}</p>}
     </div>
   );
 }
