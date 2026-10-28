@@ -34,6 +34,7 @@ function NewItem() {
           title: title,
           imageUrl: data.secure_url,
           userId: auth.currentUser.uid,
+          position: Date.now(),
         });
       })
       .then(() => {
@@ -43,7 +44,7 @@ function NewItem() {
       })
       .catch((err) => {
         console.error("Error adding item:", err.message);
-        setError("Não foi possivel adicionar a imagem. Tente novamente");
+        setError("Não foi possível adicionar a imagem. Tente novamente");
       })
       .finally(() => {
         setIsUploading(false);
@@ -52,40 +53,40 @@ function NewItem() {
 
   return (
     <div className={styles.formWrapper}>
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <input
-        className={styles.titleInput}
-        type="text"
-        placeholder="Título da imagem"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        disabled={isUploading}
-      />
-      <input
-        id="fileUpload"
-        type="file"
-        className={styles.hiddenInput}
-        onChange={(e) => setImageFile(e.target.files[0])}
-        disabled={isUploading}
-      />
-      <label
-        htmlFor="fileUpload"
-        className={`${styles.fileLabel} ${isUploading ? styles.fileLabelDisabled : ""}`}
-      >
-        {imageFile ? imageFile.name : "Escolher imagem do dispositivo"}
-      </label>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <input
+          className={styles.titleInput}
+          type="text"
+          placeholder="Título da imagem"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          disabled={isUploading}
+        />
+        <input
+          id="fileUpload"
+          type="file"
+          className={styles.hiddenInput}
+          onChange={(e) => setImageFile(e.target.files[0])}
+          disabled={isUploading}
+        />
+        <label
+          htmlFor="fileUpload"
+          className={`${styles.fileLabel} ${isUploading ? styles.fileLabelDisabled : ""}`}
+        >
+          {imageFile ? imageFile.name : "Escolher imagem do dispositivo"}
+        </label>
 
-      <button
-        type="submit"
-        className={styles.submitButton}
-        disabled={isUploading}
-      >
-        {isUploading ? "Enviando..." : "Adicionar ao mural"}
-      </button>
-    </form>
-    {error && <p className="error">{error}</p>}
+        <button
+          type="submit"
+          className={styles.submitButton}
+          disabled={isUploading}
+        >
+          {isUploading ? "Enviando..." : "Adicionar ao mural"}
+        </button>
+      </form>
+      {error && <p className="error">{error}</p>}
     </div>
-  )
+  );
 }
 
 export default NewItem;

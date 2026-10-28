@@ -1,28 +1,47 @@
 import { useEffect, useState } from "react";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import {
-  collection,
-  onSnapshot,
-  query,
-  where,
-  deleteDoc,
-  doc,
-} from "firebase/firestore";
-import { db, auth } from "./firebase";
+import { auth } from "./firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import {
+  DndContext,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+  closestCenter,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  rectSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
 import NewItem from "./components/NewItem";
 import Card from "./components/Card";
 import EditItem from "./components/EditItem";
 import styles from "./App.module.css";
+import { useMoodboard } from "./hooks/useMoodboard";
 
 function App() {
   const [showLogin, setShowLogin] = useState(true);
   const [user, setUser] = useState(null);
-  const [images, setImages] = useState([]);
-  const [editingItem, setEditingItem] = useState(null);
-  const [isLoadingImages, setIsLoadingImages] = useState(true);
-  const [fetchError, setFetchError] = useState("");
+
+  const {
+    images,
+    isLoadingImages,
+    fetchError,
+    editingItem,
+    setEditingItem,
+    handleDelete,
+    handleEdit,
+    reorderImages,
+  } = useMoodboard(user);
+
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5 },
+    }),
+  );
 
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
@@ -32,58 +51,6 @@ function App() {
     return () => unsubscribeAuth();
   }, []);
 
-  useEffect(() => {
-    if (!user) return;
-
-    const q = query(
-      collection(db, "moodboards"),
-      where("userId", "==", user.uid),
-    );
-
-    const unsubscribeSnapshot = onSnapshot(
-      q,
-      (snapshot) => {
-        const data = snapshot.docs.map((docSnap) => ({
-          id: docSnap.id,
-          ...docSnap.data(),
-        }));
-        setImages(data);
-        setIsLoadingImages(false);
-      },
-      (err) => {
-        console.error("Error fetching images:", err.message);
-        setFetchError(
-          "Não foi possível carregar suas imagens. Tente novamente.",
-        );
-        setIsLoadingImages(false);
-      },
-    );
-
-    return () => unsubscribeSnapshot();
-  }, [user]);
-
-  function handleDelete(id) {
-    const confirmed = window.confirm(
-      "Tem certeza que deseja excluir este item?",
-    );
-
-    if (!confirmed) {
-      return;
-    }
-    deleteDoc(doc(db, "moodboards", id))
-      .then(() => {
-        console.log("Item deleted successfully");
-      })
-      .catch((err) => {
-        console.error("Error deleting item:", err.message);
-        alert("Não foi possível excluir o item. Tente novamente.");
-      });
-  }
-
-  function handleEdit(item) {
-    setEditingItem(item);
-  }
-
   function handleLogout() {
     signOut(auth)
       .then(() => {
@@ -92,6 +59,18 @@ function App() {
       .catch((err) => {
         console.error("Error logging out:", err.message);
       });
+  }
+
+  function handleDragEnd(event) {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = images.findIndex((image) => image.id === active.id);
+    const newIndex = images.findIndex((image) => image.id === over.id);
+    const reorderedImages = arrayMove(images, oldIndex, newIndex);
+
+    reorderImages(reorderedImages);
   }
 
   return (
@@ -118,18 +97,31 @@ function App() {
           ) : fetchError ? (
             <p className="error">{fetchError}</p>
           ) : images.length === 0 ? (
-            <p className={styles.stateMessage}>Nenhuma imagem ainda... Adicione a primeira!</p>
+            <p className={styles.stateMessage}>
+              Nenhuma imagem ainda... Adicione a primeira!
+            </p>
           ) : (
-            <div className={styles.grid}>
-              {images.map((image) => (
-                <Card
-                  key={image.id}
-                  item={image}
-                  onDelete={handleDelete}
-                  onEdit={handleEdit}
-                />
-              ))}
-            </div>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={images.map((image) => image.id)}
+                strategy={rectSortingStrategy}
+              >
+                <div className={styles.grid}>
+                  {images.map((image) => (
+                    <Card
+                      key={image.id}
+                      item={image}
+                      onDelete={handleDelete}
+                      onEdit={handleEdit}
+                    />
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
           )}
           {editingItem && (
             <EditItem item={editingItem} onClose={() => setEditingItem(null)} />
