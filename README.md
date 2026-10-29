@@ -33,4 +33,4 @@ Aqui estão algumas soluções implementadas para garantir performance e boa exp
    Foram implementados sensores diferentes para Desktop (`MouseSensor`) e Mobile (`TouchSensor` com delay). O atraso no sensor de toque evita que o usuário arraste um card sem querer enquanto tenta rolar a página no celular, além de bloquear o menu nativo de contexto das imagens.
 
 4. **Segurança de Credenciais:**
-   As chaves de API do Firebase e do Cloudinary foram isoladas em variáveis de ambiente (`.env`), garantindo que dados sensíveis não fiquem expostos no código fonte do repositório.
+   As chaves de API do Firebase e do Cloudinary foram isoladas em variáveis de ambiente (`.env`).
